@@ -64,15 +64,16 @@ function VM-Cloner(){
 
         $vmhost = Get-VMHost -Name "192.168.7.38"
         $ds = Get-DataStore -Name "datastore1"
-        $snapshot = Get-Snapshot -VM $vm -Name $vm"-base"
-        $linkedClone = "{0}.linked" -f $vm.name
+        $snapshot = Get-Snapshot -VM $vm -Name "base"
+        $linkedClone = $vm
         $linkedVM = New-VM -LinkedClone -Name $linkedClone -VM $vm -ReferenceSnapshot $snapshot -VMHost $vmhost -Datastore $ds
         $newvmname = Read-Host "What would you like to name the new VM?"
         $newvm = New-VM -Name "$newVMName-base" -VM $linkedVM -VMHost $vmhost -Datastore $ds
         $newvm | New-Snapshot -Name "Base"
 
-        #Post-Snapshot
-        $newvmname | Get-NetworkAdapter | Set-NetworkAdapter -NetworkName "480-WAN"
+        #Post-Snapshots
+        # This did not work
+        # $newvmname | Get-NetworkAdapter | Set-NetworkAdapter -NetworkName "480-WAN"
 
     }
     catch{
