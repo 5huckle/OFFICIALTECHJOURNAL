@@ -65,13 +65,11 @@ function VM-Cloner(){
         $vmhost = Get-VMHost -Name "192.168.7.38"
         $ds = Get-DataStore -Name "datastore1"
         $snapshot = Get-Snapshot -VM $vm -Name "base"
-        $linkedClone = "awx"
-        $linkedVM = New-VM -LinkedClone -Name $linkedClone -VM $vm -ReferenceSnapshot $snapshot -VMHost $vmhost -Datastore $ds
         $newvmname = Read-Host "What would you like to name the new VM?"
-        $newvm = New-VM -Name "$newVMName" -VM $linkedVM -VMHost $vmhost -Datastore $ds
-        $newvm | New-Snapshot -Name "Base"
+        $linkedVM = New-VM -LinkedClone -Name $newvmname -VM $vm -ReferenceSnapshot $snapshot -VMHost $vmhost -Datastore $ds
+        New-Snapshot -vm $linkedVM -Name "Base"
 
-        #Post-Snapshots
+        # Post-Snapshots
         # This did not work
         # $newvmname | Get-NetworkAdapter | Set-NetworkAdapter -NetworkName "480-WAN"
 
@@ -80,4 +78,8 @@ function VM-Cloner(){
         Write-Host "Error: 404 (JK but still an error)"
         exit
     }
+}
+
+function new-network(){
+    
 }
