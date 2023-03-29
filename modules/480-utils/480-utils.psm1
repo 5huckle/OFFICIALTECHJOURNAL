@@ -65,10 +65,10 @@ function VM-Cloner(){
         $vmhost = Get-VMHost -Name "192.168.7.38"
         $ds = Get-DataStore -Name "datastore1"
         $snapshot = Get-Snapshot -VM $vm -Name "base"
-        $linkedClone = $vm
+        $linkedClone = "awx"
         $linkedVM = New-VM -LinkedClone -Name $linkedClone -VM $vm -ReferenceSnapshot $snapshot -VMHost $vmhost -Datastore $ds
         $newvmname = Read-Host "What would you like to name the new VM?"
-        $newvm = New-VM -Name "$newVMName-base" -VM $linkedVM -VMHost $vmhost -Datastore $ds
+        $newvm = New-VM -Name "$newVMName" -VM $linkedVM -VMHost $vmhost -Datastore $ds
         $newvm | New-Snapshot -Name "Base"
 
         #Post-Snapshots
