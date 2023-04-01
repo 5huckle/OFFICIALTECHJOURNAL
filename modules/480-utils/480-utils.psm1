@@ -58,7 +58,7 @@ function Select-VM([string] $folder)
 function VM-Cloner(){
 
     try{
-        Write-Host Get-VM
+        Get-VM
         $vm = Read-Host "Enter name of the VM you would like to copy" 
         Get-VM -Name $vm
 
@@ -81,7 +81,16 @@ function VM-Cloner(){
 }
 
 function new-network(){
-    
+   try {
+    $switchname = Read-Host "What is the name of the virtual switch you would like to create"
+    $portgroupname = Read-Host "What is the name of the Portgroup you would like to create"
+
+    New-VirtualSwitch -VMHost '192.168.7.38' -Name $switchname
+    Get-VMHost '192.168.7.38' | Get-VirtualSwitch -name $switchname | New-VirtualPortGroup -name $portgroupname
+    }
+    catch {
+        Write-Host " That did not work, please try again."
+    }
 }
 
 function Get-IP(){
@@ -92,5 +101,26 @@ function Get-IP(){
     }
     catch{
         Write-Host "Sorry, that didn't work. Please try again."
+    }
+}
+function vStart(){
+    try {
+        Get-VM
+        $vm = Read-Host "Which VM would you like to start?"
+        Start-VM -VM $vm -Confirm
+    }
+    catch {
+        Write-Host "Error, your VM might already be on!"
+    }
+}
+
+function vStop(){
+    try {
+        Get-VM
+        $vm = Read-Host "Which VM would you like to stop?"
+        Stop-VM -VM $vm -Confirm
+    }
+    catch {
+        Write-Host "Error, your VM might already be off!"
     }
 }
