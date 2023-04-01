@@ -83,3 +83,14 @@ function VM-Cloner(){
 function new-network(){
     
 }
+
+function Get-IP(){
+    try{
+        Get-VM
+        $vmname = Read-host "VM name"
+        Get-NetworkAdapter -VM $vmname | Select-Object Name, MacAddress
+    }
+    catch{
+        Write-Host "Sorry, that didn't work. Please try again."
+    }
+}
