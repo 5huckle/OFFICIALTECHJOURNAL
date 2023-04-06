@@ -55,6 +55,25 @@ function Select-VM([string] $folder)
     }
 }
 
+function VM-FullCloner(){
+
+    try{
+        Get-Vm
+        $vmname = Read-Host "Enter the name of the VM you would like to create a copy of" 
+        Get-VM -Name $vmname
+        $vmhost = Get-VMHost -Name "192.168.7.38"
+        $ds = Get-DataStore -Name "datastore1"
+        $snapshot = Get-Snapshot -VM $vmname -Name "Base"
+        $newvmname = Read-Host 'What would you like to name the new VM'
+        $newvm = New-VM -Name $newvmname -VM $vmname -ReferenceSnapshot $snapshot -VMHost $vmhost -Datastore $ds
+        $newvm
+        #New-Snapshot -vm $newvm -Name 'Base'
+    }
+    catch{
+        Write-Host "This is quite embarrassing but something seems to have gone wrong... please try again"
+    }
+}
+
 function VM-Cloner(){
 
     try{
@@ -97,7 +116,9 @@ function Get-IP(){
     try{
         Get-VM
         $vmname = Read-host "VM name"
+        $ip = (Get-VM -Name $vmname).guest.ipaddress[0]
         Get-NetworkAdapter -VM $vmname | Select-Object Name, MacAddress
+        Write-Host "IP Address: ", $ip
     }
     catch{
         Write-Host "Sorry, that didn't work. Please try again."
