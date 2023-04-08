@@ -145,3 +145,16 @@ function vStop(){
         Write-Host "Error, your VM might already be off!"
     }
 }
+
+function Set-Network(){
+    try{
+        Get-VM
+        $vm = Read-Host "Which VM would you like to select?"
+        Get-VirtualNetwork
+        $vmnetwork = Read-Host "Which network would you like to use?"
+        Get-NetworkAdapter -VM $vm | Set-NetworkAdapter -NetworkName $vmnetwork
+    }
+    catch {
+        Write-Host "That didn't work, please try again"
+    }
+}
