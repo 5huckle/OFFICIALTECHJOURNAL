@@ -124,6 +124,7 @@ function Get-IP(){
         Write-Host "Sorry, that didn't work. Please try again."
     }
 }
+
 function vStart(){
     try {
         Get-VM
