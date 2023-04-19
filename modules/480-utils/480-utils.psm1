@@ -116,7 +116,7 @@ function Get-IP(){
     try{
         Get-VM
         $vmname = Read-host "VM name"
-        $ip = (Get-VM -Name $vmname).guest.ipaddress[0]
+        $ip = (Get-VM -Name $vmname).guest.ipaddress[0, 2]
         Get-NetworkAdapter -VM $vmname | Select-Object Name, MacAddress
         Write-Host "IP Address: ", $ip
     }
