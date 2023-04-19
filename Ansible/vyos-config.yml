@@ -13,7 +13,7 @@
     - name: load vyos config from template
       become: yes
       template:
-        src: config.boot.j2
+        src: Files/config.boot.j2
         dest: /config/config.boot
         mode: "0775"
         owner: root

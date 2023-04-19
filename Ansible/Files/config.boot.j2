@@ -1,8 +1,8 @@
 interfaces {
-     ethernet eth2 {
+     ethernet eth0 {
          address {{ wan_ip }}/24
      }
-     ethernet eth3 {
+     ethernet eth1 {
          address {{ lan_ip }}/24
      }
      loopback lo {
@@ -15,7 +15,7 @@ interfaces {
              destination {
                  port 22
              }
-             inbound-interface eth3
+             inbound-interface eth0
              protocol tcp
              translation {
                  address {{ wan_ip }}
