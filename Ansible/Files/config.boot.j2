@@ -1,0 +1,88 @@
+interfaces {
+     ethernet eth2 {
+         address {{ wan_ip }}/24
+     }
+     ethernet eth3 {
+         address {{ wan_ip }}/24
+     }
+     loopback lo {
+     }
+ }
+ nat {
+     destination {
+         rule 10 {
+             description ssh
+             destination {
+                 port 22
+             }
+             inbound-interface eth3
+             protocol tcp
+             translation {
+                 address 10.0.17.200
+                 port 22
+             }
+         }
+     }
+ }
+ protocols {
+     static {
+         route 0.0.0.0/0 {
+             next-hop 10.0.17.2 {
+             }
+         }
+     }
+ }
+ service {
+     ssh {
+         listen-address 0.0.0.0
+     }
+ }
+ system {
+     config-management {
+         commit-revisions 100
+     }
+     conntrack {
+         modules {
+             ftp
+             h323
+             nfs
+             pptp
+             sip
+             sqlnet
+             tftp
+         }
+     }
+     console {
+         device ttyS0 {
+             speed 115200
+         }
+     }
+     host-name blue1-fw
+     login {
+         user vyos {
+             authentication {
+                 encrypted-password $6$/c72n7bfObEYMIeW$PUNw7Ri7MEbkXCCM1NzTDsUuVE6m10Qw/GrBYUAs7acM5XqAgPThVMdejxpb4WT0KB7CjMYQmTTtnxYFK8XkT0
+                 plaintext-password ""
+             }
+         }
+     }
+     name-server 10.0.17.2
+     ntp {
+         server time1.vyos.net {
+         }
+         server time2.vyos.net {
+         }
+         server time3.vyos.net {
+         }
+     }
+     syslog {
+         global {
+             facility all {
+                 level info
+             }
+             facility protocols {
+                 level debug
+             }
+         }
+     }
+ }
