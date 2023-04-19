@@ -18,7 +18,7 @@ interfaces {
              inbound-interface eth3
              protocol tcp
              translation {
-                 address 10.0.17.200
+                 address {{ wan_ip }}
                  port 22
              }
          }
@@ -27,7 +27,7 @@ interfaces {
  protocols {
      static {
          route 0.0.0.0/0 {
-             next-hop 10.0.17.2 {
+             next-hop {{  gateway }} {
              }
          }
      }
@@ -66,7 +66,7 @@ interfaces {
              }
          }
      }
-     name-server 10.0.17.2
+     name-server {{ gateway }}
      ntp {
          server time1.vyos.net {
          }
