@@ -3,7 +3,7 @@ interfaces {
          address {{ wan_ip }}/24
      }
      ethernet eth3 {
-         address {{ wan_ip }}/24
+         address {{ lan_ip }}/24
      }
      loopback lo {
      }
@@ -57,11 +57,11 @@ interfaces {
              speed 115200
          }
      }
-     host-name blue1-fw
+     host-name {{ hostname }}
      login {
          user vyos {
              authentication {
-                 encrypted-password $6$/c72n7bfObEYMIeW$PUNw7Ri7MEbkXCCM1NzTDsUuVE6m10Qw/GrBYUAs7acM5XqAgPThVMdejxpb4WT0KB7CjMYQmTTtnxYFK8XkT0
+                 encrypted-password {{ password_hash }}
                  plaintext-password ""
              }
          }
