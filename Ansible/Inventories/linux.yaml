@@ -1,0 +1,37 @@
+# Milestone 7.3
+linux:
+  hosts:
+  children:
+    rocky:
+      hosts:
+        10.0.5.75:
+          hostname: rocky-1
+          lan_ip: 10.0.5.10
+        10.0.5.76:
+          hostname: rocky-2
+          lan_ip: 10.0.5.11
+        10.0.5.77:
+          hostname: rocky-3
+          lan_ip: 10.0.5.12
+      vars:
+        device: ens192
+    
+    # Milestone 7.4
+    ubuntu:
+      hosts:
+        10.0.5.82:
+          hostname: ubuntu-1
+          lan_ip: 10.0.5.30
+        10.0.5.83:
+          hostname: ubuntu-2
+          lan_ip: 10.0.5.31
+      vars:
+        device: ens192
+
+  vars:
+    public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDT4WROAHYH+GZafkUxwV6WZdsCPZcoNdGBMe7GwrENCebnrbZrm9EGD1VEoPoKkuRkwhAw4xh+2VywydBmLotnbbN4LMxzgnX24aX6ilaXE1rhtbZT7vjZ+kBXl7j8N4p4zn8aTwIGmnHn7UlBPZpxZGzxQ8FQLEgyBkPnYqWuxMLgZpx4mP8/mKJvBAlIZxAPK3q7ZnjY2zolA1qRbsdDgIz06JGBx+o2rT5F/CUDx+mEJiVYtyVmWnZ+L8fzq5i4suoXFQlnTHT87XwPoZRlE/48QTnio5AGfZooTTakXUZKsSmFzny4gm5KpujEe99UYR0va7vONfmWa1kqaAzzX17JxCKIvczrf+omRLH7FAV4OlAxXid/yyaJfP5HK3FkCijZl+tdl2htBzemEF0htEVuk6QAKSmdlQxbZLY1IQsn43T6aEIq2e57gBC1YhtDL/lGf4gD8mhhlqC/Wrl18lv5yK9Bg2ogh+CJZYVW0T0Ct5ASDCmveUiCH//slLk= jibreel@jibreel-xubuntu-wan"
+    ansible_user: rangeuser
+    prefix: 24
+    gateway: 10.0.5.2
+    name_server: 10.0.5.5
+    domain: blue1.local
