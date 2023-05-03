@@ -1,0 +1,25 @@
+# Milestone 7.4
+linux:
+  hosts:
+  children:
+    ubuntu:
+      hosts:
+        10.0.5.84:
+          hostname: ubuntu-1
+          lan_ip: 10.0.5.30
+        10.0.5.85:
+          hostname: ubuntu-2
+          lan_ip: 10.0.5.31
+        10.0.5.86:
+          hostname: ubuntu
+          lan_ip: 10.0.5.29
+      vars:
+        device: ens160
+
+  vars:
+    public_key: ""
+    ansible_user: jibreel
+    prefix: 24
+    gateway: 10.0.5.2
+    name_server: 10.0.5.5
+    domain: blue1.local
