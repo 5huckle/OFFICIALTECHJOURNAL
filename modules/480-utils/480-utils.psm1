@@ -30,7 +30,7 @@ function Get-480Config([string] $config_path)
     return $conf
 }
 
-function Select-VM([string] $folder)
+#function Select-VM([string] $folder)
 {
     $selected_vm=$null
     try{
@@ -79,13 +79,13 @@ function VM-Cloner(){
     try{
         Get-VM
         $vm = Read-Host "Enter name of the VM you would like to copy" 
-        Get-VM -Name $vm
+        $sourcevm = Get-VM -Name $vm
 
         $vmhost = Get-VMHost -Name "192.168.7.38"
         $ds = Get-DataStore -Name "datastore1"
-        $snapshot = Get-Snapshot -VM $vm -Name "base"
+        $snapshot = get-Snapshot -VM $vm -Name "Base"
         $newvmname = Read-Host "What would you like to name the new VM?"
-        $linkedVM = New-VM -LinkedClone -Name $newvmname -VM $vm -ReferenceSnapshot $snapshot -VMHost $vmhost -Datastore $ds
+        $linkedVM = New-VM -LinkedClone -Name $newvmname -VM $sourcevm -ReferenceSnapshot $snapshot -VMHost $vmhost -Datastore $ds
         New-Snapshot -vm $linkedVM -Name "Base"
 
         # Post-Snapshots
@@ -116,7 +116,7 @@ function Get-IP(){
     try{
         Get-VM
         $vmname = Read-host "VM name"
-        $ip = (Get-VM -Name $vmname).guest.ipaddress[0, 2]
+        $ip = (Get-VM -Name $vmname).guest.ipaddress[0,2,4]
         Get-NetworkAdapter -VM $vmname | Select-Object Name, MacAddress
         Write-Host "IP Address: ", $ip
     }
