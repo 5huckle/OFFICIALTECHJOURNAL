@@ -37,12 +37,12 @@
     win_reboot:
       reboot_timeout: 300
     when: domain_install.reboot_required
-
+# Beyond here did not work for me
   - name: Add domain admin to group
     win_domain_group_membership:
       name: "Domain Admins"
       members:
-        - "{{ username }}"
+        - "{{ ansible_user }}"
       state: present
 
   - name: OU 
