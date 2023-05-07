@@ -30,7 +30,7 @@ function Get-480Config([string] $config_path)
     return $conf
 }
 
-#function Select-VM([string] $folder)
+function Select-VM([string] $folder)
 {
     $selected_vm=$null
     try{
@@ -116,7 +116,7 @@ function Get-IP(){
     try{
         Get-VM
         $vmname = Read-host "VM name"
-        $ip = (Get-VM -Name $vmname).guest.ipaddress[0,2,4]
+        $ip = (Get-VM -Name $vmname).guest.ipaddress[0,1, 2,4]
         Get-NetworkAdapter -VM $vmname | Select-Object Name, MacAddress
         Write-Host "IP Address: ", $ip
     }
@@ -158,4 +158,37 @@ function Set-Network(){
     catch {
         Write-Host "That didn't work, please try again"
     }
+}
+
+function setwinip(){
+    Get-NetworkAdapter -VM $VMName | Set-NetworkAdapter -NetworkName "blue-fw"
+    $guestUser = Read-Host -Prompt "Which user will you be using?" 
+    $guestPass = Read-Host -Prompt "Enter password" -AsSecureString
+
+    $VMName = Read-Host "Which VM are we targeting?"
+    $interfaceIndex = Read-Host "Interface Idex?"
+    $IPAddr= Read-Host "What IP address are we assigning?"
+    $gateway = "10.0.5.2" 
+    $nameserver = "10.0.5.5"
+    Write-Host $VMName
+    Write-Host $interfaceIndex
+    Write-Host $IPAddr
+    Write-Host $netmask
+    Write-Host $gateway
+    Write-Host $nameserver
+    Write-Host $guestUser
+    Write-Host $guestPass
+    
+    $scriptIP = "netsh interface ip set address name='$interfaceIndex' static $IPAddr $netmask $gateway"
+    Invoke-VMScript -VM $VMName -ScriptText $scriptIP -GuestUser $guestUser -GuestPassword $guestPass -ScriptType bat -WarningAction 0
+
+    #$scriptIP = "netsh interface ip set address name='Ethernet0' static 10.0.5.7 255.255.255.0 10.0.5.2"
+    #Invoke-VMScript -VM "dc-blue2" -ScriptText $scriptIP -GuestUser "deployer" -GuestPassword "Password123$" -ScriptType bat -WarningAction 0
+
+
+    $scriptDNS1 = 'netsh interface ip set dns name=`"Ethernet0" static 10.0.5.2'
+    Invoke-VMScript -VM $VMName -ScriptText $scriptDNS1 -GuestUser $guestUser -GuestPassword $guestPass -ScriptType bat -WarningAction 0
+
+    #$scriptDNS2 = 'netsh interface ipv4 set dns name=`"Ethernet1" static 8.8.8.8'
+    #Invoke-VMScript -VM $VMName -ScriptText $scriptDNS2 -GuestUser $guestUser -GuestPassword $guestPass -ScriptType bat -WarningAction 0
 }

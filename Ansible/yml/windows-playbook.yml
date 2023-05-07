@@ -1,0 +1,57 @@
+# Milestone 9
+# Usage: ansible-playbook -i windows.yml windows-playbook.yml --ask-pass
+
+- name: playbook
+  hosts: 10.0.5.5
+  vars_prompt:
+  - name: username
+    prompt: What is your username?
+    #deployer
+    private: false
+  - name: admin_pass
+    prompt: What is your password?
+  - name: domain_name
+    prompt: What is your domain_name?
+    private: false
+    #jibreel.local
+  - name: vm_name
+    prompt: What is your new vm name?
+    private: false
+    #dc-blue1
+
+  vars: 
+    ansible_shell_type: powershell
+  tasks:
+  - name: ADDS 
+    ansible.windows.win_powershell: 
+      script: |
+        Rename-Computer -NewName "{{ vm_name }}"
+
+  - name: Create new forest 
+    ansible.windows.win_domain: 
+      dns_domain_name: "{{ domain_name }}"
+      safe_mode_password: "{{ admin_pass }}"
+    register: domain_install
+
+  - name: Reboot
+    win_reboot:
+      reboot_timeout: 300
+    when: domain_install.reboot_required
+
+  - name: Add domain admin to group
+    win_domain_group_membership:
+      name: "Domain Admins"
+      members:
+        - "{{ username }}"
+      state: present
+
+  - name: OU 
+    ansible.windows.win_powershell:
+      script: |
+        Add-OU -Identity "blue1" -Members jibreel-adm
+        New-ADOrganizationalUnit -Name "blue1" -Path "DC=jibreel,DC=LOCAL"
+        New-ADOrganizationalUnit -Name "Accounts" -Path "OU=BLUE1,DC=jibreel,DC=LOCAL"
+        New-ADOrganizationalUnit -Name "Groups" -Path "OU=Accounts,OU=BLUE1,DC=jibreel,DC=LOCAL"
+        New-ADOrganizationalUnit -Name "Computers" -Path "OU=BLUE1,DC=jibreel,DC=LOCAL"
+        New-ADOrganizationalUnit -Name "Servers" -Path "OU=Computers,OU=BLUE1,DC=jibreel,DC=LOCAL"
+        New-ADOrganizationalUnit -Name "Workstationns" -Path "OU=Computers,OU=BLUE1,DC=jibreel,DC=LOCAL"
