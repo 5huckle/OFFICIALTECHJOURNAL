@@ -23,7 +23,7 @@
 # Hostname Setup
   - name: set new hostname
     ansible.windows.win_hostname:
-      name: "{{ hostname }}"
+      name: "dc-blue"
     register: reboothostname
 
   - name: reboot for hostname
