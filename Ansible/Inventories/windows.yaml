@@ -4,7 +4,7 @@ windows:
   children:    
     ubuntu:
       hosts:
-        10.0.5.5:
+        10.0.5.82:
       vars:
         device: eth0
 

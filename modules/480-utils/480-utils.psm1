@@ -160,16 +160,10 @@ function Set-Network(){
     }
 }
 
-function setwinip(){
-    Get-NetworkAdapter -VM $VMName | Set-NetworkAdapter -NetworkName "blue-fw"
-    $guestUser = Read-Host -Prompt "Which user will you be using?" 
-    $guestPass = Read-Host -Prompt "Enter password" -AsSecureString
+function SetIP([string] $VMName, [string] $interfaceIndex, [string] $IPAddr, [string] $netmask, [string] $gateway, [string] $nameserver, [string] $guestUser, [string] $guestPass){ 
+    Get-NetworkAdapter -VM $VMName | Set-NetworkAdapter -NetworkName "BLUE1-LAN"
 
-    $VMName = Read-Host "Which VM are we targeting?"
-    $interfaceIndex = Read-Host "Interface Idex?"
-    $IPAddr= Read-Host "What IP address are we assigning?"
-    $gateway = "10.0.5.2" 
-    $nameserver = "10.0.5.5"
+    $guestPass = Read-Host -Prompt "Enter password"
     Write-Host $VMName
     Write-Host $interfaceIndex
     Write-Host $IPAddr

@@ -2,7 +2,7 @@
 # Usage: ansible-playbook -i windows.yml windows-playbook.yml --ask-pass
 
 - name: playbook
-  hosts: 10.0.5.5
+  hosts: 10.0.5.82
   vars_prompt:
   - name: username
     prompt: What is your username?
